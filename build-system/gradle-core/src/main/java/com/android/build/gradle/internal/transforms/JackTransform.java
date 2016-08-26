@@ -280,6 +280,10 @@ public class JackTransform extends Transform {
             options.setAnnotationProcessorNames(annotationProcessorOptions.getClassNames());
             options.setAnnotationProcessorOptions(annotationProcessorOptions.getArguments());
         }
+        
+        options.setPluginPath(config.getJackOptions().getPluginPath());
+        options.setPluginNames(config.getJackOptions().getPlugins());
+        
         options.setEcjOptionFile(scope.getJackEcjOptionsFile());
         options.setAdditionalParameters(config.getJackOptions().getAdditionalParameters());
 

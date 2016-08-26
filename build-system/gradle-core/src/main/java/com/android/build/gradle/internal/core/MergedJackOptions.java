@@ -18,8 +18,11 @@ package com.android.build.gradle.internal.core;
 
 import com.android.annotations.NonNull;
 import com.android.build.gradle.internal.dsl.CoreJackOptions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +33,12 @@ public class MergedJackOptions implements CoreJackOptions {
     private boolean isEnabledFlag = false;
 
     private boolean isJackInProcessFlag = true;
+    
+    @NonNull
+    private List<File> pluginPath = Lists.newArrayList();
+    
+    @NonNull
+    private List<String> plugins = Lists.newArrayList();
 
     @NonNull
     private Map<String, String> additionalParameters = Maps.newHashMap();
@@ -37,6 +46,7 @@ public class MergedJackOptions implements CoreJackOptions {
     public void reset() {
         isEnabledFlag = false;
         isJackInProcessFlag = true;
+        plugins.clear();
         additionalParameters.clear();
     }
 
@@ -49,6 +59,8 @@ public class MergedJackOptions implements CoreJackOptions {
             //noinspection ConstantConditions - the same as above
             isJackInProcessFlag = that.isJackInProcess();
         }
+        pluginPath.addAll(that.getPluginPath());
+        plugins.addAll(that.getPlugins());
         additionalParameters.putAll(that.getAdditionalParameters());
     }
 
@@ -62,6 +74,16 @@ public class MergedJackOptions implements CoreJackOptions {
     @NonNull
     public Boolean isJackInProcess() {
         return isJackInProcessFlag;
+    }
+
+    @Override
+    public List<File> getPluginPath() {
+        return pluginPath;
+    }
+
+    @Override
+    public List<String> getPlugins() {
+        return plugins;
     }
 
     @Override

@@ -81,7 +81,7 @@ import com.android.jack.api.v01.ConfigurationException;
 import com.android.jack.api.v01.MultiDexKind;
 import com.android.jack.api.v01.ReporterKind;
 import com.android.jack.api.v01.UnrecoverableException;
-import com.android.jack.api.v02.Api02Config;
+import com.android.jack.api.v03.Api03Config;
 import com.android.manifmerger.ManifestMerger2;
 import com.android.manifmerger.ManifestSystemProperty;
 import com.android.manifmerger.MergingReport;
@@ -1629,11 +1629,11 @@ public class AndroidBuilder {
         Optional<JackProvider> jackProvider =
                 buildToolServiceLoader.getSingleService(getLogger(), BuildToolsServiceLoader.JACK);
         if (jackProvider.isPresent()) {
-            Api02Config config;
+            Api03Config config;
 
             // Get configuration object
             try {
-                config = jackProvider.get().createConfig(Api02Config.class);
+                config = jackProvider.get().createConfig(Api03Config.class);
 
                 config.setClasspath(options.getClasspaths());
                 if (options.getDexOutputDirectory() != null) {
@@ -1702,6 +1702,9 @@ public class AndroidBuilder {
                 }
 
                 config.setProcessorOptions(options.getAnnotationProcessorOptions());
+                
+                config.setPluginNames(options.getPluginNames());
+                config.setPluginPath(options.getPluginPath());
 
                 // apply all additional parameters
                 for (String paramKey: options.getAdditionalParameters().keySet()) {

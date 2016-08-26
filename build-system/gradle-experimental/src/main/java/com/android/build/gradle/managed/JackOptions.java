@@ -21,6 +21,8 @@ import com.android.annotations.NonNull;
 import org.gradle.model.Managed;
 import org.gradle.model.ModelMap;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +45,10 @@ public interface JackOptions {
     Boolean getJackInProcess();
 
     void setJackInProcess(Boolean jackInProcess);
+    
+    List<File> getPluginPath();
+    
+    List<String> getPlugins();
 
     /**
      * Additional parameters to be passed to Jack.

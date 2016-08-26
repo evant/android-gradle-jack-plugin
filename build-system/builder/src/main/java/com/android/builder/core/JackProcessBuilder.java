@@ -158,6 +158,13 @@ public class JackProcessBuilder extends ProcessEnvBuilder<JackProcessBuilder> {
                     .collect(Collectors.joining(","));
             builder.addArgs("-D", "jack.annotation-processor.options=" + processorOptions);
         }
+        
+        if (!options.getPluginPath().isEmpty()) {
+            builder.addArgs("--pluginpath", FileUtils.joinFilePaths(options.getPluginPath()));
+        }
+        for (String pluginName : options.getPluginNames()) {
+            builder.addArgs("--plugin", pluginName);
+        }
 
         if (!options.getInputFiles().isEmpty()) {
             if (options.getEcjOptionFile() != null) {

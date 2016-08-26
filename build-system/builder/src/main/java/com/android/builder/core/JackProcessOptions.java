@@ -75,6 +75,10 @@ public class JackProcessOptions {
     private Map<String, String> mAnnotationProcessorOptions = ImmutableMap.of();
     @Nullable
     private File coverageMetadataFile = null;
+    @NonNull
+    private List<File> mPluginPath = ImmutableList.of();
+    @NonNull
+    private List<String> mPluginNames = ImmutableList.of();
 
     @NonNull
     private Map<String, String> mAdditionalParameters = Maps.newHashMap();
@@ -271,6 +275,24 @@ public class JackProcessOptions {
     public void setAnnotationProcessorOptions(
             @NonNull Map<String, String> annotationProcessorOptions) {
         mAnnotationProcessorOptions = annotationProcessorOptions;
+    }
+    
+    public void setPluginPath(@NonNull List<File> pluginPath) {
+        mPluginPath = pluginPath;
+    }
+    
+    @NonNull
+    public List<File> getPluginPath() {
+        return mPluginPath;
+    }
+    
+    public void setPluginNames(@NonNull List<String> pluginNames) {
+        mPluginNames = pluginNames;
+    }
+    
+    @NonNull
+    public List<String> getPluginNames() {
+        return mPluginNames;
     }
 
     @NonNull
