@@ -172,6 +172,8 @@ public class JackPreDexTransform extends Transform {
                     getScopes(),
                     Format.JAR);
             options.setOutputFile(outFile);
+            options.setPluginPath(coreJackOptions.getPluginPath());
+            options.setPluginNames(coreJackOptions.getPlugins());
             options.setJavaMaxHeapSize(javaMaxHeapSize);
             options.setAdditionalParameters(coreJackOptions.getAdditionalParameters());
 
