@@ -162,8 +162,9 @@ public class JackProcessBuilder extends ProcessEnvBuilder<JackProcessBuilder> {
         if (!options.getPluginPath().isEmpty()) {
             builder.addArgs("--pluginpath", FileUtils.joinFilePaths(options.getPluginPath()));
         }
-        for (String pluginName : options.getPluginNames()) {
-            builder.addArgs("--plugin", pluginName);
+        if (!options.getPluginNames().isEmpty()) {
+            builder.addArgs("--plugin", options.getPluginNames().stream()
+                    .collect(Collectors.joining(",")));
         }
 
         if (!options.getInputFiles().isEmpty()) {
