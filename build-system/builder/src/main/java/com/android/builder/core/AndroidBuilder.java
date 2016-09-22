@@ -1711,6 +1711,8 @@ public class AndroidBuilder {
                 Api03Config config03 = null;
                 if (isApi03Supported) {
                     config03 = jackProvider.get().createConfig(Api03Config.class);
+                    config03.setPluginNames(options.getPluginNames());
+                    config03.setPluginPath(options.getPluginPath());
                     config02 = config03;
                 } else {
                     config02 = jackProvider.get().createConfig(Api02Config.class);

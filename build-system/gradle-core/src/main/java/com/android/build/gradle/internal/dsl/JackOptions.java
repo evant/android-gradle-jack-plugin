@@ -19,13 +19,17 @@ package com.android.build.gradle.internal.dsl;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
  * DSL object for configuring Jack options.
- *
+ * <p>
  * <p>See <a href="http://tools.android.com/tech-docs/jackandjill">Jack and Jill</a>
  */
 @SuppressWarnings("UnnecessaryInheritDoc")
@@ -35,15 +39,23 @@ public class JackOptions implements CoreJackOptions {
     @Nullable
     private Boolean isJackInProcessFlag;
     @NonNull
+    private List<File> pluginPath = Lists.newArrayList();
+    @NonNull
+    private List<String> plugins = Lists.newArrayList();
+    @NonNull
     private Map<String, String> additionalParameters = Maps.newHashMap();
 
     void _initWith(CoreJackOptions that) {
         isEnabledFlag = that.isEnabled();
         isJackInProcessFlag = that.isJackInProcess();
+        pluginPath = Lists.newArrayList(that.getPluginPath());
+        plugins = Lists.newArrayList(that.getPlugins());
         additionalParameters = Maps.newHashMap(that.getAdditionalParameters());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public Boolean isEnabled() {
@@ -54,7 +66,9 @@ public class JackOptions implements CoreJackOptions {
         isEnabledFlag = enabled;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public Boolean isJackInProcess() {
@@ -65,7 +79,45 @@ public class JackOptions implements CoreJackOptions {
         isJackInProcessFlag = jackInProcess;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @NonNull
+    public List<File> getPluginPath() {
+        return pluginPath;
+    }
+    
+    public void setPluginPath(@NonNull Collection<File> pluginPath) {
+        this.pluginPath.clear();
+        this.pluginPath.addAll(pluginPath);
+    }
+    
+    public void pluginPath(@NonNull Collection<File> pluginPath) {
+        this.pluginPath.addAll(pluginPath);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @NonNull
+    public List<String> getPlugins() {
+        return plugins;
+    }
+    
+    public void setPlugins(@NonNull Collection<String> plugins) {
+        this.plugins.clear();
+        this.plugins.addAll(plugins);
+    }
+
+    public void plugin(@NonNull String name) {
+        this.plugins.add(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NonNull
     public Map<String, String> getAdditionalParameters() {

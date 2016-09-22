@@ -32,6 +32,8 @@ import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -172,13 +174,17 @@ public class JackProcessBuilder extends ProcessEnvBuilder<JackProcessBuilder> {
                 }
             }
         }
+        
+        List<File> pluginPath = new ArrayList<>(options.getPluginPath());
+        List<String> pluginNames = new ArrayList<>(options.getPluginNames());
 
         if (options.getCoverageMetadataFile() != null) {
             if (buildToolInfo.getRevision().compareTo(JackProcessOptions.DOUARN_REV) >= 0) {
                 String coveragePluginPath = buildToolInfo.getPath(
                         BuildToolInfo.PathId.JACK_COVERAGE_PLUGIN);
-                builder.addArgs("--pluginpath", coveragePluginPath);
-                builder.addArgs("--plugin", JackProcessOptions.COVERAGE_PLUGIN_NAME);
+                
+                pluginPath.add(new File(coveragePluginPath));
+                pluginNames.add(JackProcessOptions.COVERAGE_PLUGIN_NAME);
                 builder.addArgs(
                         "-D",
                         "jack.coverage.metadata.file="
@@ -190,6 +196,13 @@ public class JackProcessBuilder extends ProcessEnvBuilder<JackProcessBuilder> {
                         "jack.coverage.metadata.file="
                                 + options.getCoverageMetadataFile().getAbsolutePath());
             };
+        }
+
+        if (!pluginPath.isEmpty()) {
+            builder.addArgs("--pluginpath", FileUtils.joinFilePaths(pluginPath));
+        }
+        if (!pluginNames.isEmpty()) {
+            builder.addArgs("--plugin", Joiner.on(",").join(pluginNames));
         }
 
         // apply all additional params

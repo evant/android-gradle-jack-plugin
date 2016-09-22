@@ -19,6 +19,8 @@ package com.android.build.gradle.internal.dsl;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +39,17 @@ public interface CoreJackOptions {
      */
     @Nullable
     Boolean isJackInProcess();
+
+    /**
+     * Plugin path for jack.
+     */
+    List<File> getPluginPath();
+
+    /**
+     * Plugins to run jack with.
+     */
+    @NonNull
+    List<String> getPlugins();
 
     /**
      * Additional parameters to be passed to Jack.
