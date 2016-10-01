@@ -121,6 +121,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -1711,8 +1712,6 @@ public class AndroidBuilder {
                 Api03Config config03 = null;
                 if (isApi03Supported) {
                     config03 = jackProvider.get().createConfig(Api03Config.class);
-                    config03.setPluginNames(options.getPluginNames());
-                    config03.setPluginPath(options.getPluginPath());
                     config02 = config03;
                 } else {
                     config02 = jackProvider.get().createConfig(Api02Config.class);
@@ -1801,6 +1800,8 @@ public class AndroidBuilder {
                     config02.setProperty(paramKey, paramValue);
                 }
 
+                List<File> pluginPath = new ArrayList<>(options.getPluginPath());
+                List<String> plugins = new ArrayList<>(options.getPluginNames());
                 if (options.getCoverageMetadataFile() != null) {
                     if (isApi03Supported) {
                         String coveragePluginPath = mTargetInfo.getBuildTools().getPath(
@@ -1817,10 +1818,8 @@ public class AndroidBuilder {
                                                 + "coverage.",
                                         coveragePlugin.getAbsolutePath());
                             } else {
-                                config03.setPluginPath(
-                                        ImmutableList.of(new File(coveragePluginPath)));
-                                config03.setPluginNames(
-                                        ImmutableList.of(JackProcessOptions.COVERAGE_PLUGIN_NAME));
+                                pluginPath.add(new File(coveragePluginPath));
+                                plugins.add(JackProcessOptions.COVERAGE_PLUGIN_NAME);
                                 config03.setProperty(
                                         "jack.coverage.metadata.file",
                                         options.getCoverageMetadataFile().getAbsolutePath());
@@ -1831,6 +1830,15 @@ public class AndroidBuilder {
                         config02.setProperty(
                                 "jack.coverage.metadata.file",
                                 options.getCoverageMetadataFile().getAbsolutePath());
+                    }
+                }
+
+                if (isApi03Supported) {
+                    if (!pluginPath.isEmpty()) {
+                        config03.setPluginPath(pluginPath);
+                    }
+                    if (!plugins.isEmpty()) {
+                        config03.setPluginNames(plugins);
                     }
                 }
 
